@@ -19,7 +19,18 @@ contract Errors is IErrors {
 }
 
 contract ErrorsOptimized is IErrors {
-    /* YOUR SOLUTION GOES HERE */
+    address owner;
 
-    function call() public view {}
+    error Unauthorized(address);
+
+    modifier onlyOwner() {
+         if (msg.sender != owner) revert Unauthorized(msg.sender);
+        _;
+    }
+
+    constructor() {
+        owner = msg.sender;
+    }
+
+    function call() public view onlyOwner {}
 }
